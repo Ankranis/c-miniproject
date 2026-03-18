@@ -5073,6 +5073,7 @@ var _cancelTicket = Module['_cancelTicket'] = makeInvalidEarlyAccess('_cancelTic
 var _searchTicket = Module['_searchTicket'] = makeInvalidEarlyAccess('_searchTicket');
 var _showSeats = Module['_showSeats'] = makeInvalidEarlyAccess('_showSeats');
 var _report = Module['_report'] = makeInvalidEarlyAccess('_report');
+var _menu = Module['_menu'] = makeInvalidEarlyAccess('_menu');
 var _main = Module['_main'] = makeInvalidEarlyAccess('_main');
 var _fflush = makeInvalidEarlyAccess('_fflush');
 var _strerror = makeInvalidEarlyAccess('_strerror');
@@ -5093,6 +5094,7 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['searchTicket'] != 'undefined', 'missing Wasm export: searchTicket');
   assert(typeof wasmExports['showSeats'] != 'undefined', 'missing Wasm export: showSeats');
   assert(typeof wasmExports['report'] != 'undefined', 'missing Wasm export: report');
+  assert(typeof wasmExports['menu'] != 'undefined', 'missing Wasm export: menu');
   assert(typeof wasmExports['main'] != 'undefined', 'missing Wasm export: main');
   assert(typeof wasmExports['fflush'] != 'undefined', 'missing Wasm export: fflush');
   assert(typeof wasmExports['strerror'] != 'undefined', 'missing Wasm export: strerror');
@@ -5110,6 +5112,7 @@ function assignWasmExports(wasmExports) {
   _searchTicket = Module['_searchTicket'] = createExportWrapper('searchTicket', 1);
   _showSeats = Module['_showSeats'] = createExportWrapper('showSeats', 1);
   _report = Module['_report'] = createExportWrapper('report', 0);
+  _menu = Module['_menu'] = createExportWrapper('menu', 5);
   _main = Module['_main'] = createExportWrapper('main', 2);
   _fflush = createExportWrapper('fflush', 1);
   _strerror = createExportWrapper('strerror', 1);
@@ -5220,7 +5223,7 @@ function run() {
     Module['onRuntimeInitialized']?.();
     consumedModuleProp('onRuntimeInitialized');
 
-    var noInitialRun = Module['noInitialRun'] || false;
+    var noInitialRun = Module['noInitialRun'] || true;
     if (!noInitialRun) callMain();
 
     postRun();
