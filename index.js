@@ -5105,10 +5105,10 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['emscripten_stack_get_current'] != 'undefined', 'missing Wasm export: emscripten_stack_get_current');
   assert(typeof wasmExports['memory'] != 'undefined', 'missing Wasm export: memory');
   assert(typeof wasmExports['__indirect_function_table'] != 'undefined', 'missing Wasm export: __indirect_function_table');
-  _book = Module['_book'] = createExportWrapper('book', 0);
-  _cancelTicket = Module['_cancelTicket'] = createExportWrapper('cancelTicket', 0);
-  _searchTicket = Module['_searchTicket'] = createExportWrapper('searchTicket', 0);
-  _showSeats = Module['_showSeats'] = createExportWrapper('showSeats', 0);
+  _book = Module['_book'] = createExportWrapper('book', 3);
+  _cancelTicket = Module['_cancelTicket'] = createExportWrapper('cancelTicket', 1);
+  _searchTicket = Module['_searchTicket'] = createExportWrapper('searchTicket', 1);
+  _showSeats = Module['_showSeats'] = createExportWrapper('showSeats', 1);
   _report = Module['_report'] = createExportWrapper('report', 0);
   _main = Module['_main'] = createExportWrapper('main', 2);
   _fflush = createExportWrapper('fflush', 1);
