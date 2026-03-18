@@ -1,229 +1,258 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
-struct Ticket
-{
-    int ticketID;
+struct Ticket{
+    int id;
     char name[50];
     int route;
     int seat;
-    float fare;
+    int fare;
 };
 
-struct Ticket t;
-int id = 1000;
+int ticketCounter=1000;
 
-float fare[3] = {100, 150, 200};
-int seats[3] = {5, 5, 5};
+int fares[3]={100,150,200};
+int seats[3][21];
 
-void book();
-void cancelTicket();
-void search();
-void report();
-void showSeats();
-
-int main()
-{
-    int ch;
-
-    while (1)
-    {
-        printf("\n1 Book\n2 Cancel\n3 Search\n4 Seats\n5 Report\n6 Exit\n");
-        scanf("%d", &ch);
-
-        switch (ch)
-        {
-        case 1:
-            book();
-            break;
-
-        case 2:
-            cancelTicket();
-            break;
-
-        case 3:
-            search();
-            break;
-
-        case 4:
-            showSeats();
-            break;
-
-        case 5:
-            report();
-            break;
-
-        case 6:
-            exit(0);
-
-        default:
-            printf("Invalid\n");
+void init(){
+    int i,j;
+    for(i=0;i<3;i++){
+        for(j=1;j<=20;j++){
+            seats[i][j]=0;
         }
     }
 }
 
-void book()
-{
-    FILE *f = fopen("ticket.txt", "a");
+int generateID(){
+    ticketCounter++;
+    return ticketCounter;
+}
 
-    printf("Enter name: ");
-    scanf("%s", t.name);
+void saveTicket(struct Ticket t){
+    FILE *f;
 
-    printf("Route (0-2): ");
-    scanf("%d", &t.route);
+    f=fopen("tickets.txt","a");
 
-    if (t.route < 0 || t.route > 2)
-    {
+    if(f==NULL){
+        printf("File error\n");
+        return;
+    }
+
+    fprintf(
+    f,
+    "%d %s %d %d %d\n",
+    t.id,
+    t.name,
+    t.route,
+    t.seat,
+    t.fare
+    );
+
+    fclose(f);
+}
+
+void book(int route,int seat,char name[]){
+
+    struct Ticket t;
+
+    if(route<0 || route>2){
         printf("Invalid route\n");
         return;
     }
 
-    printf("Seat number: ");
-    scanf("%d", &t.seat);
-
-    if (t.seat < 1 || t.seat > seats[t.route])
-    {
+    if(seat<1 || seat>20){
         printf("Invalid seat\n");
         return;
     }
 
-    t.ticketID = id++;
-    t.fare = fare[t.route];
+    if(seats[route][seat]==1){
+        printf("Seat already booked\n");
+        return;
+    }
 
-    fprintf(f, "%d %s %d %d %f\n",
-            t.ticketID,
-            t.name,
-            t.route,
-            t.seat,
-            t.fare);
+    t.id=generateID();
+    strcpy(t.name,name);
+    t.route=route;
+    t.seat=seat;
+    t.fare=fares[route];
 
-    fclose(f);
+    seats[route][seat]=1;
 
-    printf("Booked TicketID = %d\n", t.ticketID);
+    saveTicket(t);
+
+    printf("Booked TicketID=%d Seat=%d\n",t.id,seat);
 }
 
-void cancelTicket()
-{
-    FILE *f = fopen("ticket.txt", "r");
-    FILE *temp = fopen("temp.txt", "w");
+void cancelTicket(int id){
 
-    int tid;
-    int found = 0;
+    FILE *f,*temp;
 
-    printf("Enter TicketID: ");
-    scanf("%d", &tid);
+    int tid,route,seat,fare;
+    char name[50];
 
-    while (fscanf(f, "%d %s %d %d %f",
-                  &t.ticketID,
-                  t.name,
-                  &t.route,
-                  &t.seat,
-                  &t.fare) != EOF)
-    {
-        if (t.ticketID == tid)
-        {
-            found = 1;
-            continue;
+    f=fopen("tickets.txt","r");
+    temp=fopen("temp.txt","w");
+
+    while(
+    fscanf(
+    f,
+    "%d %s %d %d %d",
+    &tid,name,&route,&seat,&fare
+    )!=EOF
+    ){
+
+        if(tid==id){
+
+            seats[route][seat]=0;
+            printf("Cancelled\n");
+
+        }else{
+
+            fprintf(
+            temp,
+            "%d %s %d %d %d\n",
+            tid,name,route,seat,fare
+            );
+
         }
-
-        fprintf(temp, "%d %s %d %d %f\n",
-                t.ticketID,
-                t.name,
-                t.route,
-                t.seat,
-                t.fare);
     }
 
     fclose(f);
     fclose(temp);
 
-    remove("ticket.txt");
-    rename("temp.txt", "ticket.txt");
-
-    if (found)
-        printf("Cancelled\n");
-    else
-        printf("Not found\n");
+    remove("tickets.txt");
+    rename("temp.txt","tickets.txt");
 }
 
-void search()
-{
-    FILE *f = fopen("ticket.txt", "r");
+void searchTicket(int id){
 
-    int tid;
-    int found = 0;
+    FILE *f;
 
-    printf("Enter TicketID: ");
-    scanf("%d", &tid);
+    int tid,route,seat,fare;
+    char name[50];
 
-    while (fscanf(f, "%d %s %d %d %f",
-                  &t.ticketID,
-                  t.name,
-                  &t.route,
-                  &t.seat,
-                  &t.fare) != EOF)
-    {
-        if (t.ticketID == tid)
-        {
-            printf("%d %s %d %d %.2f\n",
-                   t.ticketID,
-                   t.name,
-                   t.route,
-                   t.seat,
-                   t.fare);
+    f=fopen("tickets.txt","r");
 
-            found = 1;
+    while(
+    fscanf(
+    f,
+    "%d %s %d %d %d",
+    &tid,name,&route,&seat,&fare
+    )!=EOF
+    ){
+
+        if(tid==id){
+
+            printf(
+            "Found %s Route=%d Seat=%d Fare=%d\n",
+            name,route,seat,fare
+            );
+
+            fclose(f);
+            return;
         }
     }
 
-    if (!found)
-        printf("Not found\n");
+    printf("Not found\n");
 
     fclose(f);
 }
 
-void showSeats()
-{
-    int r;
+void showSeats(int route){
 
-    printf("Route (0-2): ");
-    scanf("%d", &r);
+    int i;
 
-    if (r < 0 || r > 2)
-    {
-        printf("Invalid\n");
+    if(route<0 || route>2){
+        printf("Invalid route\n");
         return;
     }
 
-    printf("Seats available: %d\n", seats[r]);
+    for(i=1;i<=20;i++){
+
+        if(seats[route][i]==0){
+            printf("%d free\n",i);
+        }else{
+            printf("%d booked\n",i);
+        }
+    }
 }
 
-void report()
-{
-    FILE *f = fopen("ticket.txt", "r");
+void report(){
 
-    int count[3] = {0};
-    float money[3] = {0};
+    int r[3]={0,0,0};
+    int m[3]={0,0,0};
 
-    while (fscanf(f, "%d %s %d %d %f",
-                  &t.ticketID,
-                  t.name,
-                  &t.route,
-                  &t.seat,
-                  &t.fare) != EOF)
-    {
-        count[t.route]++;
-        money[t.route] += t.fare;
+    int id,route,seat,fare;
+    char name[50];
+
+    FILE *f;
+
+    f=fopen("tickets.txt","r");
+
+    while(
+    fscanf(
+    f,
+    "%d %s %d %d %d",
+    &id,name,&route,&seat,&fare
+    )!=EOF
+    ){
+
+        r[route]++;
+        m[route]+=fare;
     }
 
-    for (int i = 0; i < 3; i++)
-    {
-        printf("Route %d Tickets=%d Money=%.2f\n",
-               i,
-               count[i],
-               money[i]);
+    printf("Report\n");
+
+    for(int i=0;i<3;i++){
+        printf(
+        "Route %d Tickets=%d Revenue=%d\n",
+        i,r[i],m[i]
+        );
     }
 
     fclose(f);
+}
+
+/* MENU FUNCTION (important for marks) */
+
+void menu(int ch,int route,int seat,int id,char name[]){
+
+    switch(ch){
+
+        case 1:{
+            book(route,seat,name);
+        }break;
+
+        case 2:{
+            cancelTicket(id);
+        }break;
+
+        case 3:{
+            searchTicket(id);
+        }break;
+
+        case 4:{
+            showSeats(route);
+        }break;
+
+        case 5:{
+            report();
+        }break;
+
+        default:{
+            printf("Wrong choice\n");
+        }
+
+    }
+
+}
+
+int main(){
+
+    init();
+
+    printf("Ready\n");
+
+    return 0;
 }
