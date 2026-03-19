@@ -1,17 +1,22 @@
-let selected = [];
+let selected=[];
 
-let booked = {
-1: new Set(),
-2: new Set(),
-3: new Set()
+let booked={
+1:new Set(),
+2:new Set(),
+3:new Set()
 };
+
+function clearOutput()
+{
+document.getElementById("output").innerText="";
+}
 
 function showBook()
 {
 
-document.getElementById("output").innerHTML="";
+clearOutput();
 
-document.getElementById("ui").innerHTML =
+document.getElementById("ui").innerHTML=
 
 `
 Name:
@@ -38,17 +43,15 @@ makeGrid();
 
 }
 
-
-
 function makeGrid()
 {
 
-let route =
+let route=
 parseInt(
 document.getElementById("route").value
 );
 
-let g="<div class='bus'>";
+let g="<div class='grid'>";
 
 for(let i=1;i<=20;i++)
 {
@@ -57,6 +60,7 @@ let cls="seat";
 
 if(booked[route].has(i))
 cls+=" booked";
+
 else if(selected.includes(i))
 cls+=" selected";
 
@@ -64,9 +68,6 @@ g+=
 `<div class="${cls}" onclick="pick(${i})">
 ${i}
 </div>`;
-
-if(i%2==0)
-g+="<div></div>";
 
 }
 
@@ -76,55 +77,42 @@ document.getElementById("grid").innerHTML=g;
 
 }
 
-
-
 function pick(n)
 {
 
-let route =
+let route=
 parseInt(
 document.getElementById("route").value
 );
 
-if(booked[route].has(n))
-return;
+if(booked[route].has(n)) return;
 
 if(selected.includes(n))
-{
-selected =
-selected.filter(x=>x!=n);
-}
+selected=selected.filter(x=>x!=n);
+
 else
-{
 selected.push(n);
-}
 
 makeGrid();
 
 }
 
-
-
 function confirmBook()
 {
 
-document.getElementById("output").innerText="";
+clearOutput();
 
-let name =
+let name=
 document.getElementById("name").value;
 
-let route =
+let route=
 parseInt(
 document.getElementById("route").value
 );
 
-let out = "";
-
-out += "Booking Confirmed\n";
-out += "Name under which ticket(s) booked :- " + name + "\n\n";
-out += "Tickets information :-\n";
-
-document.getElementById("output").innerText = out;
+let text="Booking Confirmed\n";
+text+="Name under which ticket(s) booked :- "+name+"\n\n";
+text+="Tickets information :-\n";
 
 for(let s of selected)
 {
@@ -138,22 +126,24 @@ null,
 
 booked[route].add(s);
 
+text+="Seat "+s+"\n";
+
 }
 
 selected=[];
+
+document.getElementById("output").innerText=text;
 
 makeGrid();
 
 }
 
-
-
 function cancel()
 {
 
-document.getElementById("output").innerText="";
+clearOutput();
 
-let id = prompt("Enter Ticket ID");
+let id=prompt("Enter Ticket ID");
 
 Module.ccall(
 "cancelTicket",
@@ -164,14 +154,12 @@ null,
 
 }
 
-
-
 function search()
 {
 
-document.getElementById("output").innerText="";
+clearOutput();
 
-let id = prompt("Enter Ticket ID");
+let id=prompt("Enter Ticket ID");
 
 Module.ccall(
 "searchTicket",
@@ -182,12 +170,10 @@ null,
 
 }
 
-
-
 function report()
 {
 
-document.getElementById("output").innerText="";
+clearOutput();
 
 Module.ccall(
 "report",
