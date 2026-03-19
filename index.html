@@ -16,7 +16,7 @@ color:white;
 .box{
 background:white;
 color:black;
-width:600px;
+width:650px;
 margin:auto;
 margin-top:40px;
 padding:20px;
@@ -30,21 +30,28 @@ background:#1d2671;
 color:white;
 border:none;
 border-radius:5px;
+cursor:pointer;
 }
 
-/* BUS LAYOUT */
+.bus{
+display:grid;
+grid-template-columns:40px 40px 20px 40px 40px;
+gap:6px;
+justify-content:center;
+margin-top:20px;
+}
 
 .seat{
-width:50px;
-height:50px;
+width:40px;
+height:40px;
 background:green;
 color:white;
 display:flex;
 align-items:center;
 justify-content:center;
 cursor:pointer;
-border-radius:6px;
-font-size:14px;
+border-radius:5px;
+font-size:12px;
 }
 
 .selected{
@@ -56,12 +63,11 @@ background:gray;
 cursor:not-allowed;
 }
 
-.bus{
-display:grid;
-grid-template-columns:50px 50px 20px 50px 50px;
-gap:8px;
-justify-content:center;
+#output{
 margin-top:20px;
+text-align:left;
+white-space:pre-line;
+font-size:14px;
 }
 
 </style>
@@ -80,6 +86,8 @@ margin-top:20px;
 <button onclick="report()">Report</button>
 
 <div id="ui"></div>
+
+<div id="output"></div>
 
 </div>
 

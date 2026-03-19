@@ -9,6 +9,8 @@ let booked = {
 function showBook()
 {
 
+document.getElementById("output").innerHTML="";
+
 document.getElementById("ui").innerHTML =
 
 `
@@ -46,7 +48,7 @@ parseInt(
 document.getElementById("route").value
 );
 
-let g = "<div class='bus'>";
+let g="<div class='bus'>";
 
 for(let i=1;i<=20;i++)
 {
@@ -114,7 +116,11 @@ parseInt(
 document.getElementById("route").value
 );
 
-document.getElementById("ui").innerHTML="";
+let out = "";
+
+out += "Booking Confirmed\n";
+out += "Name under which ticket(s) booked :- " + name + "\n\n";
+out += "Tickets information :-\n";
 
 for(let s of selected)
 {
@@ -132,6 +138,8 @@ booked[route].add(s);
 
 selected=[];
 
+document.getElementById("output").innerText = out;
+
 makeGrid();
 
 }
@@ -141,9 +149,7 @@ makeGrid();
 function cancel()
 {
 
-let id = prompt("Ticket ID");
-
-document.getElementById("ui").innerHTML="";
+let id = prompt("Enter Ticket ID");
 
 Module.ccall(
 "cancelTicket",
@@ -152,6 +158,9 @@ null,
 [id]
 );
 
+document.getElementById("output").innerText =
+"Ticket Cancel request sent";
+
 }
 
 
@@ -159,9 +168,7 @@ null,
 function search()
 {
 
-let id = prompt("Ticket ID");
-
-document.getElementById("ui").innerHTML="";
+let id = prompt("Enter Ticket ID");
 
 Module.ccall(
 "searchTicket",
@@ -176,8 +183,6 @@ null,
 
 function report()
 {
-
-document.getElementById("ui").innerHTML="";
 
 Module.ccall(
 "report",

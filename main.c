@@ -83,41 +83,47 @@ void saveTicket(struct Ticket t){
 
 void book(int route,int seat,char name[])
 {
-struct Ticket t;
 
-if(seats[route][seat]==1)
-{
-showMsg("Seat already booked");
-return;
-}
+    struct Ticket t;
 
-t.id=generateID();
+    if(route<0 || route>2){
+        showMsg("Invalid route");
+        return;
+    }
 
-strcpy(t.name,name);
+    if(seat<1 || seat>20){
+        showMsg("Invalid seat");
+        return;
+    }
 
-t.route=route;
+    if(seats[route][seat]==1){
+        showMsg("Seat already booked");
+        return;
+    }
 
-t.seat=seat;
+    t.id=generateID();
+    strcpy(t.name,name);
+    t.route=route;
+    t.seat=seat;
+    t.fare=fares[route];
 
-t.fare=fares[route];
+    seats[route][seat]=1;
 
-seats[route][seat]=1;
+    saveTicket(t);
 
-saveTicket(t);
+    char buf[200];
 
-char buf[200];
+    sprintf(
+    buf,
+    "TicketID=%d Route=%d Seat=%d Fare=%d",
+    t.id,
+    route+1,
+    seat,
+    t.fare
+    );
 
-sprintf(
-buf,
-"Booking Confirmed\nTicketID=%d\nName=%s\nRoute=%d\nSeat=%d\nFare=%d",
-t.id,
-t.name,
-route+1,
-seat,
-t.fare
-);
+    showMsg(buf);
 
-showMsg(buf);
 }
 
 void cancelTicket(int id)
@@ -238,12 +244,20 @@ m[route]+=fare;
 
 char buf[300];
 
+int total = m[0]+m[1]+m[2];
+
 sprintf(
 buf,
-"Report\nRoute1: %d tickets Rs=%d\nRoute2: %d tickets Rs=%d\nRoute3: %d tickets Rs=%d",
+
+"Route 1:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+"Route 2:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+"Route 3:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+"Total revenue generated - %d rupees",
+
 r[0],m[0],
 r[1],m[1],
-r[2],m[2]
+r[2],m[2],
+total
 );
 
 showMsg(buf);
