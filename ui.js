@@ -1,4 +1,5 @@
 let selected = [];
+let booked = [];
 
 function showBook()
 {
@@ -39,8 +40,17 @@ d.className = "seat";
 
 d.innerText = i;
 
+if(booked.includes(i))
+{
+d.style.background="red";
+}
+
 d.onclick = function()
 {
+
+if(booked.includes(i))
+return;
+
 if(d.classList.contains("selected"))
 {
 d.classList.remove("selected");
@@ -51,6 +61,7 @@ else
 d.classList.add("selected");
 selected.push(i);
 }
+
 };
 
 g.appendChild(d);
@@ -59,31 +70,40 @@ g.appendChild(d);
 
 function confirmBook()
 {
-if(typeof Module === "undefined")
+
+if(typeof Module==="undefined")
 {
-alert("WASM not loaded yet");
+alert("WASM not ready");
 return;
 }
 
-let name = document.getElementById("name").value;
-let route = parseInt(document.getElementById("route").value);
+let name=document.getElementById("name").value;
+let route=parseInt(document.getElementById("route").value);
 
 for(let s of selected)
 {
+
 Module.ccall(
 "book",
 null,
 ["number","number","string"],
 [route,s,name]
 );
+
+booked.push(s);
+
 }
 
-alert("Ticket booked");
+alert("Booking confirmed");
+
+makeGrid();
+
 }
 
 function cancel()
 {
-let id = prompt("Ticket ID");
+
+let id=prompt("Ticket ID");
 
 Module.ccall(
 "cancelTicket",
@@ -91,11 +111,13 @@ null,
 ["number"],
 [id]
 );
+
 }
 
 function search()
 {
-let id = prompt("Ticket ID");
+
+let id=prompt("Ticket ID");
 
 Module.ccall(
 "searchTicket",
@@ -103,14 +125,17 @@ null,
 ["number"],
 [id]
 );
+
 }
 
 function report()
 {
+
 Module.ccall(
 "report",
 null,
 [],
 []
 );
+
 }
