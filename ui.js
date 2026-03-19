@@ -108,6 +108,8 @@ makeGrid();
 function confirmBook()
 {
 
+document.getElementById("output").innerText="";
+
 let name =
 document.getElementById("name").value;
 
@@ -121,6 +123,8 @@ let out = "";
 out += "Booking Confirmed\n";
 out += "Name under which ticket(s) booked :- " + name + "\n\n";
 out += "Tickets information :-\n";
+
+document.getElementById("output").innerText = out;
 
 for(let s of selected)
 {
@@ -138,8 +142,6 @@ booked[route].add(s);
 
 selected=[];
 
-document.getElementById("output").innerText = out;
-
 makeGrid();
 
 }
@@ -148,6 +150,8 @@ makeGrid();
 
 function cancel()
 {
+
+document.getElementById("output").innerText="";
 
 let id = prompt("Enter Ticket ID");
 
@@ -158,15 +162,14 @@ null,
 [id]
 );
 
-document.getElementById("output").innerText =
-"Ticket Cancel request sent";
-
 }
 
 
 
 function search()
 {
+
+document.getElementById("output").innerText="";
 
 let id = prompt("Enter Ticket ID");
 
@@ -183,6 +186,8 @@ null,
 
 function report()
 {
+
+document.getElementById("output").innerText="";
 
 Module.ccall(
 "report",
