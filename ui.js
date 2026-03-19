@@ -1,20 +1,26 @@
 let selected = [];
-let booked = [];
+
+let booked = {
+1: [],
+2: [],
+3: []
+};
 
 function showBook()
 {
+
 document.getElementById("ui").innerHTML = `
 
 Name <input id=name><br><br>
 
 Route
-<select id=route>
-<option value=0>1</option>
-<option value=1>2</option>
-<option value=2>3</option>
+<select id=route onchange="makeGrid()">
+<option value=1>1</option>
+<option value=2>2</option>
+<option value=3>3</option>
 </select>
 
-<div class=grid id=grid></div>
+<div class=bus id=grid></div>
 
 <br>
 <button onclick="confirmBook()">Confirm</button>
@@ -22,51 +28,92 @@ Route
 `;
 
 makeGrid();
+
 }
+
 
 function makeGrid()
 {
+
 selected = [];
 
-let g = document.getElementById("grid");
+let route =
+parseInt(
+document.getElementById("route").value
+);
+
+let g =
+document.getElementById("grid");
 
 g.innerHTML = "";
 
-for(let i=1;i<=12;i++)
+for(let i=1;i<=20;i++)
 {
-let d = document.createElement("div");
+
+let d =
+document.createElement("div");
 
 d.className = "seat";
 
 d.innerText = i;
 
-if(booked.includes(i))
+
+/* already booked */
+
+if(
+booked[route].includes(i)
+)
 {
-d.style.background="red";
+d.style.background = "gray";
 }
+
+
+/* click */
 
 d.onclick = function()
 {
 
-if(booked.includes(i))
+if(
+booked[route].includes(i)
+)
 return;
 
-if(d.classList.contains("selected"))
+
+/* remove */
+
+if(
+d.classList.contains("selected")
+)
 {
 d.classList.remove("selected");
-selected = selected.filter(x=>x!=i);
+
+selected =
+selected.filter(
+x => x != i
+);
 }
+
+/* add */
+
 else
 {
 d.classList.add("selected");
+
+d.style.background = "yellow";
+
 selected.push(i);
 }
 
 };
 
+
 g.appendChild(d);
+
 }
+
 }
+
+
 
 function confirmBook()
 {
@@ -77,8 +124,13 @@ alert("WASM not ready");
 return;
 }
 
-let name=document.getElementById("name").value;
-let route=parseInt(document.getElementById("route").value);
+let name =
+document.getElementById("name").value;
+
+let route =
+parseInt(
+document.getElementById("route").value
+);
 
 for(let s of selected)
 {
@@ -87,10 +139,12 @@ Module.ccall(
 "book",
 null,
 ["number","number","string"],
-[route,s,name]
+[route-1,s,name]
 );
 
-booked.push(s);
+/* store booked */
+
+booked[route].push(s);
 
 }
 
@@ -100,10 +154,13 @@ makeGrid();
 
 }
 
+
+
 function cancel()
 {
 
-let id=prompt("Ticket ID");
+let id =
+prompt("Ticket ID");
 
 Module.ccall(
 "cancelTicket",
@@ -114,10 +171,13 @@ null,
 
 }
 
+
+
 function search()
 {
 
-let id=prompt("Ticket ID");
+let id =
+prompt("Ticket ID");
 
 Module.ccall(
 "searchTicket",
@@ -127,6 +187,8 @@ null,
 );
 
 }
+
+
 
 function report()
 {
