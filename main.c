@@ -248,11 +248,8 @@ void menu(int ch,int route,int seat,int id,char name[]){
 
 }
 
-int main(){
-
-    init();
-
-    printf("Ready\n");
-
+int main()
+{
+    printf("Bus System Loaded\n");
     return 0;
 }

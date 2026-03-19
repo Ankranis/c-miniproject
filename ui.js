@@ -1,114 +1,103 @@
-let selectedSeats = [];
+let selected=[];
 
 function showBook()
 {
-    let html = `
-    Name:<input id="name"><br>
+document.getElementById("ui").innerHTML=`
+Name <input id=name><br>
 
-    Route:
-    <select id="route">
-    <option value="1">Route1</option>
-    <option value="2">Route2</option>
-    <option value="3">Route3</option>
-    </select>
+Route
+<select id=route>
+<option value=0>1</option>
+<option value=1>2</option>
+<option value=2>3</option>
+</select>
 
-    <div class="grid" id="grid"></div>
+<div class=grid id=grid></div>
 
-    <button onclick="book()">Confirm</button>
-    `;
+<button onclick=book()>Confirm</button>
+`;
 
-    document.getElementById("ui").innerHTML = html;
-
-    makeGrid();
+makeGrid();
 }
 
 function makeGrid()
 {
-    let g = document.getElementById("grid");
-    g.innerHTML = "";
+let g=document.getElementById("grid");
 
-    for(let i=1;i<=12;i++)
-    {
-        let d = document.createElement("div");
+g.innerHTML="";
 
-        d.className="seat";
+for(let i=1;i<=12;i++)
+{
+let d=document.createElement("div");
 
-        d.innerText=i;
+d.className="seat";
 
-        d.onclick=function()
-        {
-            if(d.classList.contains("selected"))
-            {
-                d.classList.remove("selected");
-                selectedSeats = selectedSeats.filter(x=>x!=i);
-            }
-            else
-            {
-                d.classList.add("selected");
-                selectedSeats.push(i);
-            }
-        };
+d.innerText=i;
 
-        g.appendChild(d);
-    }
+d.onclick=function()
+{
+if(d.classList.contains("selected"))
+{
+d.classList.remove("selected");
+selected=selected.filter(x=>x!=i);
+}
+else
+{
+d.classList.add("selected");
+selected.push(i);
+}
+};
+
+g.appendChild(d);
+}
 }
 
 function book()
 {
-    let name = document.getElementById("name").value;
-    let route = document.getElementById("route").value;
+let name=document.getElementById("name").value;
+let route=document.getElementById("route").value;
 
-    if(name=="" || selectedSeats.length==0)
-    {
-        alert("Enter data");
-        return;
-    }
-
-    for(let s of selectedSeats)
-    {
-        Module.ccall(
-            "book",
-            "number",
-            ["string","number","number"],
-            [name,route,s]
-        );
-    }
-
-    alert("Booked");
+for(let s of selected)
+{
+Module.ccall(
+"book",
+null,
+["number","number","string"],
+[route,s,name]
+);
+}
 }
 
 function cancel()
 {
-    let id = prompt("Ticket ID");
+let id=prompt("TicketID");
 
-    Module.ccall(
-        "cancelTicket",
-        null,
-        ["number"],
-        [id]
-    );
-
-    alert("Cancelled");
+Module.ccall(
+"cancelTicket",
+null,
+["number"],
+[id]
+);
 }
 
 function search()
 {
-    let id = prompt("Ticket ID");
+let id=prompt("TicketID");
 
-    Module.ccall(
-        "searchTicket",
-        null,
-        ["number"],
-        [id]
-    );
+Module.ccall(
+"searchTicket",
+null,
+["number"],
+[id]
+);
 }
 
 function report()
 {
-    Module.ccall(
-        "report",
-        null,
-        [],
-        []
-    );
+Module.ccall(
+"report",
+null,
+[],
+[]
+);
 }
