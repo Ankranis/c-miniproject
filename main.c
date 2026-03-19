@@ -1,6 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include"emscripten.h"
+
+EM_JS(void, showMsg, (const char* msg), {
+    alert(UTF8ToString(msg));
+});
 
 struct Ticket{
     int id;
@@ -81,7 +86,9 @@ void book(int route,int seat,char name[]){
 
     saveTicket(t);
 
-    printf("Booked TicketID=%d Seat=%d\n",t.id,seat);
+    char buf[100];
+    sprintf(buf,"Booked TicketID=%d Seat=%d",t.id,seat);
+    showMsg(buf);
 }
 
 void cancelTicket(int id){
@@ -105,7 +112,7 @@ void cancelTicket(int id){
         if(tid==id){
 
             seats[route][seat]=0;
-            printf("Cancelled\n");
+            showMsg("Cancelled");
 
         }else{
 
@@ -144,17 +151,16 @@ void searchTicket(int id){
 
         if(tid==id){
 
-            printf(
-            "Found %s Route=%d Seat=%d Fare=%d\n",
-            name,route,seat,fare
-            );
+            char buf[200];
+            sprintf(buf,"Found %s Route=%d Seat=%d Fare=%d",name,route,seat,fare);
+            showMsg(buf);
 
             fclose(f);
             return;
         }
     }
 
-    printf("Not found\n");
+    showMsg("Not found");
 
     fclose(f);
 }
@@ -197,19 +203,21 @@ void report(){
     &id,name,&route,&seat,&fare
     )!=EOF
     ){
-
         r[route]++;
         m[route]+=fare;
     }
 
-    printf("Report\n");
+    char buf[300];
 
-    for(int i=0;i<3;i++){
-        printf(
-        "Route %d Tickets=%d Revenue=%d\n",
-        i,r[i],m[i]
-        );
-    }
+    sprintf(
+    buf,
+    "R0=%d Rs=%d | R1=%d Rs=%d | R2=%d Rs=%d",
+    r[0],m[0],
+    r[1],m[1],
+    r[2],m[2]
+    );
+
+    showMsg(buf);
 
     fclose(f);
 }
@@ -248,8 +256,35 @@ void menu(int ch,int route,int seat,int id,char name[]){
 
 }
 
+void loadSeats()
+{
+FILE *f;
+
+int id,route,seat,fare;
+char name[50];
+
+f=fopen("tickets.txt","r");
+
+if(f==NULL) return;
+
+while(
+fscanf(
+f,
+"%d %s %d %d %d",
+&id,name,&route,&seat,&fare
+)!=EOF
+)
+{
+seats[route][seat]=1;
+}
+
+fclose(f);
+}
+
 int main()
 {
-    printf("Bus System Loaded\n");
-    return 0;
+init();
+loadSeats();
+printf("Loaded\n");
+return 0;
 }

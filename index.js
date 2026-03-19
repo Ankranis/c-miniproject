@@ -5066,13 +5066,14 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('onFree');
   ignoredModuleProp('onSbrkGrow');
 }
+function showMsg(msg) { alert(UTF8ToString(msg)); }
 
 // Imports from the Wasm binary.
 var _book = Module['_book'] = makeInvalidEarlyAccess('_book');
 var _cancelTicket = Module['_cancelTicket'] = makeInvalidEarlyAccess('_cancelTicket');
 var _searchTicket = Module['_searchTicket'] = makeInvalidEarlyAccess('_searchTicket');
-var _showSeats = Module['_showSeats'] = makeInvalidEarlyAccess('_showSeats');
 var _report = Module['_report'] = makeInvalidEarlyAccess('_report');
+var _menu = Module['_menu'] = makeInvalidEarlyAccess('_menu');
 var _main = Module['_main'] = makeInvalidEarlyAccess('_main');
 var _fflush = makeInvalidEarlyAccess('_fflush');
 var _strerror = makeInvalidEarlyAccess('_strerror');
@@ -5091,8 +5092,8 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['book'] != 'undefined', 'missing Wasm export: book');
   assert(typeof wasmExports['cancelTicket'] != 'undefined', 'missing Wasm export: cancelTicket');
   assert(typeof wasmExports['searchTicket'] != 'undefined', 'missing Wasm export: searchTicket');
-  assert(typeof wasmExports['showSeats'] != 'undefined', 'missing Wasm export: showSeats');
   assert(typeof wasmExports['report'] != 'undefined', 'missing Wasm export: report');
+  assert(typeof wasmExports['menu'] != 'undefined', 'missing Wasm export: menu');
   assert(typeof wasmExports['main'] != 'undefined', 'missing Wasm export: main');
   assert(typeof wasmExports['fflush'] != 'undefined', 'missing Wasm export: fflush');
   assert(typeof wasmExports['strerror'] != 'undefined', 'missing Wasm export: strerror');
@@ -5108,8 +5109,8 @@ function assignWasmExports(wasmExports) {
   _book = Module['_book'] = createExportWrapper('book', 3);
   _cancelTicket = Module['_cancelTicket'] = createExportWrapper('cancelTicket', 1);
   _searchTicket = Module['_searchTicket'] = createExportWrapper('searchTicket', 1);
-  _showSeats = Module['_showSeats'] = createExportWrapper('showSeats', 1);
   _report = Module['_report'] = createExportWrapper('report', 0);
+  _menu = Module['_menu'] = createExportWrapper('menu', 5);
   _main = Module['_main'] = createExportWrapper('main', 2);
   _fflush = createExportWrapper('fflush', 1);
   _strerror = createExportWrapper('strerror', 1);
@@ -5148,7 +5149,9 @@ var wasmImports = {
   /** @export */
   fd_seek: _fd_seek,
   /** @export */
-  fd_write: _fd_write
+  fd_write: _fd_write,
+  /** @export */
+  showMsg
 };
 
 
