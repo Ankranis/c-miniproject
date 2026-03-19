@@ -9,22 +9,27 @@ let booked = {
 function showBook()
 {
 
-document.getElementById("ui").innerHTML = `
+document.getElementById("ui").innerHTML =
 
-Name <input id=name><br><br>
+`
+Name:
+<input id="name">
 
-Route
-<select id=route onchange="makeGrid()">
-<option value=1>1</option>
-<option value=2>2</option>
-<option value=3>3</option>
+<br><br>
+
+Route:
+
+<select id="route" onchange="makeGrid()">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
 </select>
 
-<div class=bus id=grid></div>
+<div id="grid"></div>
 
 <br>
-<button onclick="confirmBook()">Confirm</button>
 
+<button onclick="confirmBook()">Confirm</button>
 `;
 
 makeGrid();
@@ -32,84 +37,72 @@ makeGrid();
 }
 
 
+
 function makeGrid()
 {
-
-selected = [];
 
 let route =
 parseInt(
 document.getElementById("route").value
 );
 
-let g =
-document.getElementById("grid");
+let g = "";
 
-g.innerHTML = "";
+g += "<div class='bus'>";
 
 for(let i=1;i<=20;i++)
 {
 
-let d =
-document.createElement("div");
+let cls = "seat";
 
-d.className = "seat";
+if(selected.includes(i))
+cls += " selected";
 
-d.innerText = i;
+if(booked[route].has(i))
+cls += " booked";
 
 
-/* already booked */
+g +=
+`<div class="${cls}"
+onclick="pick(${i})">
+${i}
+</div>`;
 
-if(
-booked[route].includes(i)
-)
-{
-d.style.background = "gray";
+if(i%2==0)
+g += "<div></div>";
+
+}
+
+g += "</div>";
+
+document.getElementById("grid").innerHTML = g;
+
 }
 
 
-/* click */
 
-d.onclick = function()
+function pick(n)
 {
 
-if(
-booked[route].has(i)
-)
+let route =
+parseInt(
+document.getElementById("route").value
+);
+
+if(booked[route].has(n))
 return;
 
-
-/* remove */
-
-if(
-d.classList.contains("selected")
-)
+if(selected.includes(n))
 {
-d.classList.remove("selected");
-
 selected =
-selected.filter(
-x => x != i
-);
+selected.filter(x=>x!=n);
 }
-
-/* add */
-
 else
 {
-d.classList.add("selected");
-
-d.style.background = "yellow";
-
-selected.push(i);
+selected.push(n);
 }
 
-};
-
-
-g.appendChild(d);
-
-}
+makeGrid();
 
 }
 
@@ -142,6 +135,8 @@ booked[route].add(s);
 
 }
 
+selected=[];
+
 makeGrid();
 
 }
@@ -151,7 +146,7 @@ makeGrid();
 function cancel()
 {
 
-let id=prompt("Ticket ID");
+let id = prompt("Ticket ID");
 
 document.getElementById("ui").innerHTML="";
 
@@ -169,7 +164,7 @@ null,
 function search()
 {
 
-let id=prompt("Ticket ID");
+let id = prompt("Ticket ID");
 
 document.getElementById("ui").innerHTML="";
 
