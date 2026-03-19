@@ -1,9 +1,10 @@
-let selected=[];
+let selected = [];
 
 function showBook()
 {
-document.getElementById("ui").innerHTML=`
-Name <input id=name><br>
+document.getElementById("ui").innerHTML = `
+
+Name <input id=name><br><br>
 
 Route
 <select id=route>
@@ -14,7 +15,9 @@ Route
 
 <div class=grid id=grid></div>
 
-<button onclick=book()>Confirm</button>
+<br>
+<button onclick="confirmBook()">Confirm</button>
+
 `;
 
 makeGrid();
@@ -22,24 +25,26 @@ makeGrid();
 
 function makeGrid()
 {
-let g=document.getElementById("grid");
+selected = [];
 
-g.innerHTML="";
+let g = document.getElementById("grid");
+
+g.innerHTML = "";
 
 for(let i=1;i<=12;i++)
 {
-let d=document.createElement("div");
+let d = document.createElement("div");
 
-d.className="seat";
+d.className = "seat";
 
-d.innerText=i;
+d.innerText = i;
 
-d.onclick=function()
+d.onclick = function()
 {
 if(d.classList.contains("selected"))
 {
 d.classList.remove("selected");
-selected=selected.filter(x=>x!=i);
+selected = selected.filter(x=>x!=i);
 }
 else
 {
@@ -52,10 +57,16 @@ g.appendChild(d);
 }
 }
 
-function book()
+function confirmBook()
 {
-let name=document.getElementById("name").value;
-let route=document.getElementById("route").value;
+if(typeof Module === "undefined")
+{
+alert("WASM not loaded yet");
+return;
+}
+
+let name = document.getElementById("name").value;
+let route = parseInt(document.getElementById("route").value);
 
 for(let s of selected)
 {
@@ -66,11 +77,13 @@ null,
 [route,s,name]
 );
 }
+
+alert("Ticket booked");
 }
 
 function cancel()
 {
-let id=prompt("TicketID");
+let id = prompt("Ticket ID");
 
 Module.ccall(
 "cancelTicket",
@@ -82,7 +95,7 @@ null,
 
 function search()
 {
-let id=prompt("TicketID");
+let id = prompt("Ticket ID");
 
 Module.ccall(
 "searchTicket",
