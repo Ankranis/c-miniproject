@@ -34,17 +34,9 @@ border-radius:5px;
 
 /* BUS LAYOUT */
 
-.bus{
-display:grid;
-grid-template-columns:60px 60px 30px 60px 60px;
-gap:10px;
-justify-content:center;
-margin-top:20px;
-}
-
 .seat{
-width:60px;
-height:60px;
+width:50px;
+height:50px;
 background:green;
 color:white;
 display:flex;
@@ -52,10 +44,24 @@ align-items:center;
 justify-content:center;
 cursor:pointer;
 border-radius:6px;
+font-size:14px;
 }
 
 .selected{
-background:yellow;
+background:orange;
+}
+
+.booked{
+background:gray;
+cursor:not-allowed;
+}
+
+.bus{
+display:grid;
+grid-template-columns:50px 50px 20px 50px 50px;
+gap:8px;
+justify-content:center;
+margin-top:20px;
 }
 
 </style>

@@ -109,7 +109,7 @@ char buf[200];
 
 sprintf(
 buf,
-"TicketID=%d Name=%s Route=%d Seat=%d Fare=%d",
+"Booking Confirmed\nTicketID=%d\nName=%s\nRoute=%d\nSeat=%d\nFare=%d",
 t.id,
 t.name,
 route+1,
@@ -190,7 +190,7 @@ char buf[200];
 
 sprintf(
 buf,
-"Found Name=%s Route=%d Seat=%d Fare=%d",
+"Ticket Found\nName: %s\nRoute: %d\nSeat: %d\nFare: %d",
 name,
 route+1,
 seat,
@@ -240,7 +240,7 @@ char buf[300];
 
 sprintf(
 buf,
-"R1=%d Rs=%d | R2=%d Rs=%d | R3=%d Rs=%d",
+"Report\nRoute1: %d tickets Rs=%d\nRoute2: %d tickets Rs=%d\nRoute3: %d tickets Rs=%d",
 r[0],m[0],
 r[1],m[1],
 r[2],m[2]

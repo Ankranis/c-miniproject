@@ -46,36 +46,31 @@ parseInt(
 document.getElementById("route").value
 );
 
-let g = "";
-
-g += "<div class='bus'>";
+let g = "<div class='bus'>";
 
 for(let i=1;i<=20;i++)
 {
 
-let cls = "seat";
-
-if(selected.includes(i))
-cls += " selected";
+let cls="seat";
 
 if(booked[route].has(i))
-cls += " booked";
+cls+=" booked";
+else if(selected.includes(i))
+cls+=" selected";
 
-
-g +=
-`<div class="${cls}"
-onclick="pick(${i})">
+g+=
+`<div class="${cls}" onclick="pick(${i})">
 ${i}
 </div>`;
 
 if(i%2==0)
-g += "<div></div>";
+g+="<div></div>";
 
 }
 
-g += "</div>";
+g+="</div>";
 
-document.getElementById("grid").innerHTML = g;
+document.getElementById("grid").innerHTML=g;
 
 }
 
