@@ -32,11 +32,14 @@ border:none;
 border-radius:5px;
 }
 
-.grid{
+/* BUS LAYOUT */
+
+.bus{
 display:grid;
-grid-template-columns:repeat(4,60px);
+grid-template-columns:60px 60px 30px 60px 60px;
 gap:10px;
 justify-content:center;
+margin-top:20px;
 }
 
 .seat{
@@ -48,33 +51,14 @@ display:flex;
 align-items:center;
 justify-content:center;
 cursor:pointer;
+border-radius:6px;
 }
 
 .selected{
-background:orange;
+background:yellow;
 }
 
 </style>
-.bus
-{
-display:grid;
-grid-template-columns:60px 60px 40px 60px 60px;
-gap:10px;
-justify-content:center;
-margin-top:20px;
-}
-
-.seat
-{
-width:60px;
-height:60px;
-background:green;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-}
 
 </head>
 

@@ -1,9 +1,9 @@
 let selected = [];
 
 let booked = {
-1: [],
-2: [],
-3: []
+1: new Set(),
+2: new Set(),
+3: new Set()
 };
 
 function showBook()
@@ -74,7 +74,7 @@ d.onclick = function()
 {
 
 if(
-booked[route].includes(i)
+booked[route].has(i)
 )
 return;
 
@@ -118,12 +118,6 @@ g.appendChild(d);
 function confirmBook()
 {
 
-if(typeof Module==="undefined")
-{
-alert("WASM not ready");
-return;
-}
-
 let name =
 document.getElementById("name").value;
 
@@ -131,6 +125,8 @@ let route =
 parseInt(
 document.getElementById("route").value
 );
+
+document.getElementById("ui").innerHTML="";
 
 for(let s of selected)
 {
@@ -142,13 +138,9 @@ null,
 [route-1,s,name]
 );
 
-/* store booked */
-
-booked[route].push(s);
+booked[route].add(s);
 
 }
-
-alert("Booking confirmed");
 
 makeGrid();
 
@@ -159,8 +151,9 @@ makeGrid();
 function cancel()
 {
 
-let id =
-prompt("Ticket ID");
+let id=prompt("Ticket ID");
+
+document.getElementById("ui").innerHTML="";
 
 Module.ccall(
 "cancelTicket",
@@ -176,8 +169,9 @@ null,
 function search()
 {
 
-let id =
-prompt("Ticket ID");
+let id=prompt("Ticket ID");
+
+document.getElementById("ui").innerHTML="";
 
 Module.ccall(
 "searchTicket",
@@ -192,6 +186,8 @@ null,
 
 function report()
 {
+
+document.getElementById("ui").innerHTML="";
 
 Module.ccall(
 "report",
