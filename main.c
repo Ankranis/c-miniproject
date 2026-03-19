@@ -252,7 +252,7 @@ buf,
 "Route 1:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
 "Route 2:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
 "Route 3:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
-"Total revenue generated - %d rupees",
+"Total revenue generated - %d rupees\n",
 
 r[0],m[0],
 r[1],m[1],
