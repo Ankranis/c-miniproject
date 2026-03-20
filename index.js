@@ -4537,7 +4537,7 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('onFree');
   ignoredModuleProp('onSbrkGrow');
 }
-function showMsg(msg) { document.getElementById("ui").innerHTML += "<br>"+UTF8ToString(msg); }
+function showMsg(msg) { let out = document.getElementById("output"); out.innerText += UTF8ToString(msg) + "\n"; }
 
 // Imports from the Wasm binary.
 var _book = Module['_book'] = makeInvalidEarlyAccess('_book');
