@@ -137,6 +137,8 @@ char name[50];
 f=fopen("tickets.txt","r");
 temp=fopen("temp.txt","w");
 
+if(f==NULL) return;
+
 while(
 fscanf(
 f,
@@ -148,16 +150,20 @@ f,
 
 if(tid==id)
 {
+
 seats[route][seat]=0;
 showMsg("Cancelled");
+
 }
 else
 {
+
 fprintf(
 temp,
 "%d %s %d %d %d\n",
 tid,name,route,seat,fare
 );
+
 }
 
 }
@@ -220,53 +226,55 @@ fclose(f);
 void report()
 {
 
-    int r[3]={0,0,0};
-    int m[3]={0,0,0};
+int r[3]={0,0,0};
+int m[3]={0,0,0};
 
-    int id,route,seat,fare;
-    char name[50];
+int id,route,seat,fare;
+char name[50];
 
-    FILE *f;
+FILE *f;
 
-    f=fopen("tickets.txt","r");
+f=fopen("tickets.txt","r");
 
-    if(f==NULL){
-        showMsg("No data");
-        return;
-    }
+if(f==NULL)
+{
+showMsg("No data");
+return;
+}
 
-    while(
-    fscanf(
-    f,
-    "%d %s %d %d %d",
-    &id,name,&route,&seat,&fare
-    )!=EOF
-    ){
-        r[route]++;
-        m[route]+=fare;
-    }
+while(
+fscanf(
+f,
+"%d %s %d %d %d",
+&id,name,&route,&seat,&fare
+)!=EOF
+)
+{
+r[route]++;
+m[route]+=fare;
+}
 
-    fclose(f);
+fclose(f);
 
-    int total = m[0]+m[1]+m[2];
+int total=m[0]+m[1]+m[2];
 
-    char buf[500];
+char buf[500];
 
-    sprintf(
-    buf,
+sprintf(
+buf,
 
-    "Route 1:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
-    "Route 2:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
-    "Route 3:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
-    "Total revenue generated - %d rupees",
+"Route 1:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+"Route 2:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+"Route 3:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+"Total revenue generated - %d rupees",
 
-    r[0],m[0],
-    r[1],m[1],
-    r[2],m[2],
-    total
-    );
+r[0],m[0],
+r[1],m[1],
+r[2],m[2],
+total
+);
 
-    showMsg(buf);
+showMsg(buf);
 
 }
 
