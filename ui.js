@@ -1,14 +1,8 @@
 function clearOutput()
 {
 document.getElementById("output").innerText="";
+document.getElementById("ui").innerHTML="";
 }
-let selected=[];
-
-let booked={
-1:new Set(),
-2:new Set(),
-3:new Set()
-};
 
 function clearOutput()
 {
@@ -55,7 +49,7 @@ parseInt(
 document.getElementById("route").value
 );
 
-let g="<div class='grid'>";
+let g="<div class='bus'>";
 
 for(let i=1;i<=20;i++)
 {
@@ -75,9 +69,8 @@ ${i}
 
 }
 
-g+="</div>";
-
-document.getElementById("grid").innerHTML=g;
+if(i%2==0)
+g+="<div></div>";
 
 }
 
@@ -105,6 +98,8 @@ function confirmBook()
 {
 
 clearOutput();
+
+document.getElementById("output").innerText=text;
 
 let name=
 document.getElementById("name").value;
@@ -136,7 +131,7 @@ text+="Seat "+s+"\n";
 
 selected=[];
 
-document.getElementById("output").innerText=text;
+
 
 makeGrid();
 let g="<div class='grid'>";
@@ -149,25 +144,14 @@ clearOutput();
 
 let id = prompt("Enter Ticket ID");
 
+if(!id) return;
+
 Module.ccall(
 "cancelTicket",
 null,
 ["number"],
 [id]
 );
-
-// reload seats from file not possible,
-// so easiest → reset UI memory
-
-booked={
-1:new Set(),
-2:new Set(),
-3:new Set()
-};
-
-selected=[];
-
-showBook();
 
 }
 
@@ -181,6 +165,24 @@ Module.ccall(
 null,
 [],
 []
+);
+
+}
+
+function search()
+{
+
+clearOutput();
+
+let id = prompt("Enter Ticket ID");
+
+if(!id) return;
+
+Module.ccall(
+"searchTicket",
+null,
+["number"],
+[id]
 );
 
 }

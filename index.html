@@ -35,22 +35,22 @@ cursor:pointer;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(5,50px);
-gap:8px;
+grid-template-columns:repeat(4,60px);
+gap:10px;
 justify-content:center;
 margin-top:20px;
 }
 
 .seat{
-width:50px;
-height:50px;
+width:60px;
+height:60px;
 background:green;
 color:white;
 display:flex;
 align-items:center;
 justify-content:center;
 cursor:pointer;
-border-radius:5px;
+border-radius:6px;
 }
 
 .selected{
@@ -59,7 +59,14 @@ background:orange;
 
 .booked{
 background:gray;
-cursor:not-allowed;
+
+.bus{
+display:grid;
+grid-template-columns:50px 50px 20px 50px 50px;
+gap:8px;
+justify-content:center;
+margin-top:20px;
+}
 }
 
 #output{
