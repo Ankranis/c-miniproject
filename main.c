@@ -20,6 +20,7 @@ int ticketCounter=1000;
 int fares[3]={100,150,200};
 int seats[3][21];
 
+
 void init(){
     for(int i=0;i<3;i++){
         for(int j=1;j<=20;j++){
@@ -28,7 +29,22 @@ void init(){
     }
 }
 
+
+void resetSeats()
+{
+    for(int i=0;i<3;i++)
+    {
+        for(int j=1;j<=20;j++)
+        {
+            seats[i][j]=0;
+        }
+    }
+}
+
+
 void loadSeats(){
+
+    resetSeats();
 
     FILE *f;
 
@@ -52,10 +68,12 @@ void loadSeats(){
     fclose(f);
 }
 
+
 int generateID(){
     ticketCounter++;
     return ticketCounter;
 }
+
 
 void saveTicket(struct Ticket t){
 
@@ -81,8 +99,11 @@ void saveTicket(struct Ticket t){
     fclose(f);
 }
 
+
 void book(int route,int seat,char name[])
 {
+
+    loadSeats();
 
     struct Ticket t;
 
@@ -126,8 +147,11 @@ void book(int route,int seat,char name[])
 
 }
 
+
 void cancelTicket(int id)
 {
+
+loadSeats();
 
 FILE *f,*temp;
 
@@ -150,20 +174,15 @@ f,
 
 if(tid==id)
 {
-
-seats[route][seat]=0;
 showMsg("Cancelled");
-
 }
 else
 {
-
 fprintf(
 temp,
 "%d %s %d %d %d\n",
 tid,name,route,seat,fare
 );
-
 }
 
 }
@@ -176,8 +195,11 @@ rename("temp.txt","tickets.txt");
 
 }
 
+
 void searchTicket(int id)
 {
+
+loadSeats();
 
 FILE *f;
 
@@ -185,6 +207,12 @@ int tid,route,seat,fare;
 char name[50];
 
 f=fopen("tickets.txt","r");
+
+if(f==NULL)
+{
+showMsg("Not found");
+return;
+}
 
 while(
 fscanf(
@@ -223,8 +251,11 @@ fclose(f);
 
 }
 
+
 void report()
 {
+
+loadSeats();
 
 int r[3]={0,0,0};
 int m[3]={0,0,0};
@@ -278,7 +309,6 @@ showMsg(buf);
 
 }
 
-/* MENU FUNCTION (required) */
 
 void menu(int ch,int route,int seat,int id,char name[]){
 
@@ -304,6 +334,7 @@ void menu(int ch,int route,int seat,int id,char name[]){
             showMsg("Wrong choice");
     }
 }
+
 
 int main(){
 
