@@ -22,7 +22,6 @@ buffer="";
 Module.print=function(text)
 {
 buffer+=text+"\n";
-document.getElementById("output").innerText=buffer;
 
 let m=text.match(/TicketID=(\d+) Route=(\d+) Seat=(\d+)/);
 
@@ -34,6 +33,7 @@ let s=parseInt(m[3]);
 
 ticketMap[id]={route:r,seat:s};
 }
+
 };
 
 
@@ -136,11 +136,11 @@ parseInt(
 document.getElementById("route").value
 );
 
-buffer+="Booking Confirmed\n";
-buffer+="Name under which ticket(s) booked :- "+name+"\n\n";
-buffer+="Tickets information :-\n";
+let text="";
 
-document.getElementById("output").innerText=buffer;
+text+="Booking Confirmed\n";
+text+="Name under which ticket(s) booked :- "+name+"\n\n";
+text+="Tickets information :-\n";
 
 for(let s of selected)
 {
@@ -155,6 +155,10 @@ null,
 booked[route].add(s);
 
 }
+
+text += buffer;
+
+document.getElementById("output").innerText=text;
 
 selected=[];
 makeGrid();
@@ -185,6 +189,7 @@ if(ticketMap[id])
 let r=ticketMap[id].route;
 let s=ticketMap[id].seat;
 
+if(booked[r])
 booked[r].delete(s);
 }
 
@@ -223,4 +228,5 @@ null,
 [],
 []
 );
+
 }
