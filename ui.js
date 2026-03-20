@@ -1,20 +1,23 @@
-function clearOutput()
-{
-document.getElementById("output").innerText="";
-document.getElementById("ui").innerHTML="";
-}
+let selected = [];
+
+let booked = {
+1:new Set(),
+2:new Set(),
+3:new Set()
+};
 
 function clearOutput()
 {
 document.getElementById("output").innerText="";
 }
+
 
 function showBook()
 {
 
 clearOutput();
 
-document.getElementById("ui").innerHTML=
+document.getElementById("ui").innerHTML =
 
 `
 Name:
@@ -41,15 +44,16 @@ makeGrid();
 
 }
 
+
 function makeGrid()
 {
 
-let route=
+let route =
 parseInt(
 document.getElementById("route").value
 );
 
-let g="<div class='bus'>";
+let g = "<div class='grid'>";
 
 for(let i=1;i<=20;i++)
 {
@@ -62,22 +66,24 @@ cls+=" booked";
 else if(selected.includes(i))
 cls+=" selected";
 
-g+=
+g +=
 `<div class="${cls}" onclick="pick(${i})">
 ${i}
 </div>`;
 
 }
 
-if(i%2==0)
-g+="<div></div>";
+g += "</div>";
+
+document.getElementById("grid").innerHTML = g;
 
 }
+
 
 function pick(n)
 {
 
-let route=
+let route =
 parseInt(
 document.getElementById("route").value
 );
@@ -85,7 +91,7 @@ document.getElementById("route").value
 if(booked[route].has(n)) return;
 
 if(selected.includes(n))
-selected=selected.filter(x=>x!=n);
+selected = selected.filter(x=>x!=n);
 
 else
 selected.push(n);
@@ -94,24 +100,27 @@ makeGrid();
 
 }
 
+
 function confirmBook()
 {
 
 clearOutput();
 
-document.getElementById("output").innerText=text;
-
-let name=
+let name =
 document.getElementById("name").value;
 
-let route=
+let route =
 parseInt(
 document.getElementById("route").value
 );
 
-let text="Booking Confirmed\n";
-text+="Name under which ticket(s) booked :- "+name+"\n\n";
-text+="Tickets information :-\n";
+let text = "";
+
+text += "Booking Confirmed\n";
+text += "Name under which ticket(s) booked :- " + name + "\n\n";
+text += "Tickets information :-\n";
+
+document.getElementById("output").innerText = text;
 
 for(let s of selected)
 {
@@ -125,17 +134,14 @@ null,
 
 booked[route].add(s);
 
-text+="Seat "+s+"\n";
-
 }
 
 selected=[];
 
-
-
 makeGrid();
-let g="<div class='grid'>";
+
 }
+
 
 function cancel()
 {
@@ -155,19 +161,6 @@ null,
 
 }
 
-function report()
-{
-
-clearOutput();
-
-Module.ccall(
-"report",
-null,
-[],
-[]
-);
-
-}
 
 function search()
 {
@@ -183,6 +176,21 @@ Module.ccall(
 null,
 ["number"],
 [id]
+);
+
+}
+
+
+function report()
+{
+
+clearOutput();
+
+Module.ccall(
+"report",
+null,
+[],
+[]
 );
 
 }
