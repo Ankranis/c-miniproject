@@ -342,7 +342,7 @@ int main(){
     init();
     loadSeats();
 
-    showMsg("System Loaded");
+
 
     return 0;
 }
