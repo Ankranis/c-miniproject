@@ -32,6 +32,8 @@ let r=parseInt(m[2]);
 let s=parseInt(m[3]);
 
 ticketMap[id]={route:r,seat:s};
+
+booked[r].add(s);   // ✅ important fix
 }
 
 };
@@ -126,7 +128,7 @@ makeGrid();
 function confirmBook()
 {
 
-buffer="";
+buffer="";   // ✅ important fix
 
 let name=
 document.getElementById("name").value;
@@ -152,15 +154,14 @@ null,
 [route-1,s,name]
 );
 
-booked[route].add(s);
-
 }
 
-text += buffer;
+text += buffer;   // ✅ prints ticket lines under info
 
 document.getElementById("output").innerText=text;
 
 selected=[];
+
 makeGrid();
 
 }
@@ -191,6 +192,8 @@ let s=ticketMap[id].seat;
 
 if(booked[r])
 booked[r].delete(s);
+
+delete ticketMap[id];   // ✅ important fix
 }
 
 makeGrid();
@@ -207,12 +210,16 @@ let id=prompt("Enter Ticket ID");
 
 if(!id) return;
 
+buffer="";
+
 Module.ccall(
 "searchTicket",
 null,
 ["number"],
 [id]
 );
+
+document.getElementById("output").innerText=buffer;
 
 }
 
@@ -222,11 +229,15 @@ function report()
 
 clearAll();
 
+buffer="";
+
 Module.ccall(
 "report",
 null,
 [],
 []
 );
+
+document.getElementById("output").innerText=buffer;
 
 }
