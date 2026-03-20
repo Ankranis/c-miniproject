@@ -220,49 +220,53 @@ fclose(f);
 void report()
 {
 
-int r[3]={0,0,0};
-int m[3]={0,0,0};
+    int r[3]={0,0,0};
+    int m[3]={0,0,0};
 
-int id,route,seat,fare;
-char name[50];
+    int id,route,seat,fare;
+    char name[50];
 
-FILE *f;
+    FILE *f;
 
-f=fopen("tickets.txt","r");
+    f=fopen("tickets.txt","r");
 
-while(
-fscanf(
-f,
-"%d %s %d %d %d",
-&id,name,&route,&seat,&fare
-)!=EOF
-)
-{
-r[route]++;
-m[route]+=fare;
-}
+    if(f==NULL){
+        showMsg("No data");
+        return;
+    }
 
-char buf[300];
+    while(
+    fscanf(
+    f,
+    "%d %s %d %d %d",
+    &id,name,&route,&seat,&fare
+    )!=EOF
+    ){
+        r[route]++;
+        m[route]+=fare;
+    }
 
-int total = m[0]+m[1]+m[2];
+    fclose(f);
 
-sprintf(
-buf,
+    int total = m[0]+m[1]+m[2];
 
-"Route 1:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
-"Route 2:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
-"Route 3:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
-"Total revenue generated - %d rupees\n",
+    char buf[500];
 
-r[0],m[0],
-r[1],m[1],
-r[2],m[2],
-total
-);
+    sprintf(
+    buf,
 
-showMsg(buf);
+    "Route 1:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+    "Route 2:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+    "Route 3:\n%d tickets booked\nRevenue generated - %d rupees\n\n"
+    "Total revenue generated - %d rupees",
 
-fclose(f);
+    r[0],m[0],
+    r[1],m[1],
+    r[2],m[2],
+    total
+    );
+
+    showMsg(buf);
 
 }
 

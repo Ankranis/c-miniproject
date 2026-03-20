@@ -1,3 +1,7 @@
+function clearOutput()
+{
+document.getElementById("output").innerText="";
+}
 let selected=[];
 
 let booked={
@@ -135,7 +139,7 @@ selected=[];
 document.getElementById("output").innerText=text;
 
 makeGrid();
-
+let g="<div class='grid'>";
 }
 
 function cancel()
@@ -143,7 +147,7 @@ function cancel()
 
 clearOutput();
 
-let id=prompt("Enter Ticket ID");
+let id = prompt("Enter Ticket ID");
 
 Module.ccall(
 "cancelTicket",
@@ -152,21 +156,18 @@ null,
 [id]
 );
 
-}
+// reload seats from file not possible,
+// so easiest → reset UI memory
 
-function search()
-{
+booked={
+1:new Set(),
+2:new Set(),
+3:new Set()
+};
 
-clearOutput();
+selected=[];
 
-let id=prompt("Enter Ticket ID");
-
-Module.ccall(
-"searchTicket",
-null,
-["number"],
-[id]
-);
+showBook();
 
 }
 
