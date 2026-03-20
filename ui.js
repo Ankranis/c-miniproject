@@ -1,23 +1,48 @@
-let selected = [];
+let selected=[];
 
-let booked = {
+let booked={
 1:new Set(),
 2:new Set(),
 3:new Set()
 };
 
-function clearOutput()
+let ticketMap={};
+
+let buffer="";
+
+
+function clearAll()
 {
 document.getElementById("output").innerText="";
+document.getElementById("ui").innerHTML="";
+buffer="";
 }
+
+
+Module.print=function(text)
+{
+buffer+=text+"\n";
+document.getElementById("output").innerText=buffer;
+
+let m=text.match(/TicketID=(\d+) Route=(\d+) Seat=(\d+)/);
+
+if(m)
+{
+let id=parseInt(m[1]);
+let r=parseInt(m[2]);
+let s=parseInt(m[3]);
+
+ticketMap[id]={route:r,seat:s};
+}
+};
 
 
 function showBook()
 {
 
-clearOutput();
+clearAll();
 
-document.getElementById("ui").innerHTML =
+document.getElementById("ui").innerHTML=
 
 `
 Name:
@@ -48,12 +73,12 @@ makeGrid();
 function makeGrid()
 {
 
-let route =
+let route=
 parseInt(
 document.getElementById("route").value
 );
 
-let g = "<div class='grid'>";
+let g="<div class='grid'>";
 
 for(let i=1;i<=20;i++)
 {
@@ -66,16 +91,14 @@ cls+=" booked";
 else if(selected.includes(i))
 cls+=" selected";
 
-g +=
-`<div class="${cls}" onclick="pick(${i})">
-${i}
-</div>`;
+g+=
+`<div class="${cls}" onclick="pick(${i})">${i}</div>`;
 
 }
 
-g += "</div>";
+g+="</div>";
 
-document.getElementById("grid").innerHTML = g;
+document.getElementById("grid").innerHTML=g;
 
 }
 
@@ -83,7 +106,7 @@ document.getElementById("grid").innerHTML = g;
 function pick(n)
 {
 
-let route =
+let route=
 parseInt(
 document.getElementById("route").value
 );
@@ -91,8 +114,7 @@ document.getElementById("route").value
 if(booked[route].has(n)) return;
 
 if(selected.includes(n))
-selected = selected.filter(x=>x!=n);
-
+selected=selected.filter(x=>x!=n);
 else
 selected.push(n);
 
@@ -104,23 +126,21 @@ makeGrid();
 function confirmBook()
 {
 
-clearOutput();
+buffer="";
 
-let name =
+let name=
 document.getElementById("name").value;
 
-let route =
+let route=
 parseInt(
 document.getElementById("route").value
 );
 
-let text = "";
+buffer+="Booking Confirmed\n";
+buffer+="Name under which ticket(s) booked :- "+name+"\n\n";
+buffer+="Tickets information :-\n";
 
-text += "Booking Confirmed\n";
-text += "Name under which ticket(s) booked :- " + name + "\n\n";
-text += "Tickets information :-\n";
-
-document.getElementById("output").innerText = text;
+document.getElementById("output").innerText=buffer;
 
 for(let s of selected)
 {
@@ -137,7 +157,6 @@ booked[route].add(s);
 }
 
 selected=[];
-
 makeGrid();
 
 }
@@ -146,9 +165,9 @@ makeGrid();
 function cancel()
 {
 
-clearOutput();
+clearAll();
 
-let id = prompt("Enter Ticket ID");
+let id=prompt("Enter Ticket ID");
 
 if(!id) return;
 
@@ -159,15 +178,27 @@ null,
 [id]
 );
 
+id=parseInt(id);
+
+if(ticketMap[id])
+{
+let r=ticketMap[id].route;
+let s=ticketMap[id].seat;
+
+booked[r].delete(s);
+}
+
+makeGrid();
+
 }
 
 
 function search()
 {
 
-clearOutput();
+clearAll();
 
-let id = prompt("Enter Ticket ID");
+let id=prompt("Enter Ticket ID");
 
 if(!id) return;
 
@@ -184,7 +215,7 @@ null,
 function report()
 {
 
-clearOutput();
+clearAll();
 
 Module.ccall(
 "report",
@@ -192,5 +223,4 @@ null,
 [],
 []
 );
-
 }
