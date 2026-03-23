@@ -33,9 +33,8 @@ let s=parseInt(m[3]);
 
 ticketMap[id]={route:r,seat:s};
 
-booked[r].add(s);   // fix printing + grey seat
+booked[r].add(s);
 }
-
 };
 
 
