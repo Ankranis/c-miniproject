@@ -153,9 +153,11 @@ null,
 [route-1,s,name]
 );
 
-}
+booked[route].add(s);   // IMPORTANT restore this
 
-text += buffer;
+text+="Seat "+s+"\n";
+
+}
 
 document.getElementById("output").innerText=text;
 

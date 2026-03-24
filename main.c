@@ -4,7 +4,8 @@
 #include "emscripten.h"
 
 EM_JS(void, showMsg, (const char* msg), {
-    Module.print(UTF8ToString(msg));
+    let out = document.getElementById("output");
+    out.innerText += UTF8ToString(msg) + "\n";
 });
 
 struct Ticket{
