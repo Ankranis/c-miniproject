@@ -4,8 +4,7 @@
 #include "emscripten.h"
 
 EM_JS(void, showMsg, (const char* msg), {
-    let out = document.getElementById("output");
-    out.innerText += UTF8ToString(msg) + "\n";
+    Module.print(UTF8ToString(msg));
 });
 
 struct Ticket{
@@ -311,9 +310,13 @@ showMsg(buf);
 }
 
 
-void menu(int ch,int route,int seat,int id,char name[]){
+/* SWITCH CASE MENU */
 
-    switch(ch){
+void menu(int ch,int route,int seat,int id,char name[])
+{
+
+    switch(ch)
+    {
 
         case 1:
             book(route,seat,name);
@@ -334,6 +337,7 @@ void menu(int ch,int route,int seat,int id,char name[]){
         default:
             showMsg("Wrong choice");
     }
+
 }
 
 
@@ -341,8 +345,6 @@ int main(){
 
     init();
     loadSeats();
-
-
 
     return 0;
 }
