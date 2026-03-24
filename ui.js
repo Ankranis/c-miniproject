@@ -122,10 +122,10 @@ for(let s of selected)
 {
 
 Module.ccall(
-"book",
+"menu",
 null,
-["number","number","string"],
-[route-1,s,name]
+["number","number","number","number","string"],
+[1,route-1,s,0,name]
 );
 
 booked[route].add(s);
@@ -153,16 +153,14 @@ let id=prompt("Enter Ticket ID");
 if(!id) return;
 
 Module.ccall(
-"cancelTicket",
+"menu",
 null,
-["number"],
-[id]
+["number","number","number","number","string"],
+[2,0,0,id,""]
 );
 
-/* seat freeing based on user input not ticketMap */
-
-let route=prompt("Enter Route of ticket");
-let seat=prompt("Enter Seat number");
+let route=prompt("Enter Route");
+let seat=prompt("Enter Seat");
 
 route=parseInt(route);
 seat=parseInt(seat);
@@ -185,10 +183,10 @@ let id=prompt("Enter Ticket ID");
 if(!id) return;
 
 Module.ccall(
-"searchTicket",
+"menu",
 null,
-["number"],
-[id]
+["number","number","number","number","string"],
+[3,0,0,id,""]
 );
 
 }
@@ -200,10 +198,10 @@ function report()
 clearAll();
 
 Module.ccall(
-"report",
+"menu",
 null,
-[],
-[]
+["number","number","number","number","string"],
+[4,0,0,0,""]
 );
 
 }
