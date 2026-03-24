@@ -8,34 +8,11 @@ let booked={
 
 let ticketMap={};
 
-let buffer="";
-
-
 function clearAll()
 {
 document.getElementById("output").innerText="";
 document.getElementById("ui").innerHTML="";
-buffer="";
 }
-
-
-Module.print=function(text)
-{
-buffer+=text+"\n";
-
-let m=text.match(/TicketID=(\d+) Route=(\d+) Seat=(\d+)/);
-
-if(m)
-{
-let id=parseInt(m[1]);
-let r=parseInt(m[2]);
-let s=parseInt(m[3]);
-
-ticketMap[id]={route:r,seat:s};
-
-booked[r].add(s);
-}
-};
 
 
 function showBook()
@@ -127,8 +104,6 @@ makeGrid();
 function confirmBook()
 {
 
-buffer="";
-
 let name=
 document.getElementById("name").value;
 
@@ -153,7 +128,7 @@ null,
 [route-1,s,name]
 );
 
-booked[route].add(s);   // IMPORTANT restore this
+booked[route].add(s);
 
 text+="Seat "+s+"\n";
 
@@ -162,6 +137,7 @@ text+="Seat "+s+"\n";
 document.getElementById("output").innerText=text;
 
 selected=[];
+
 makeGrid();
 
 }
@@ -183,18 +159,16 @@ null,
 [id]
 );
 
-id=parseInt(id);
+/* seat freeing based on user input not ticketMap */
 
-if(ticketMap[id])
-{
-let r=ticketMap[id].route;
-let s=ticketMap[id].seat;
+let route=prompt("Enter Route of ticket");
+let seat=prompt("Enter Seat number");
 
-if(booked[r])
-booked[r].delete(s);
+route=parseInt(route);
+seat=parseInt(seat);
 
-delete ticketMap[id];
-}
+if(booked[route])
+booked[route].delete(seat);
 
 makeGrid();
 
