@@ -6,8 +6,6 @@ let booked={
 3:new Set()
 };
 
-let ticketMap={};
-
 function clearAll()
 {
 document.getElementById("output").innerText="";
@@ -51,8 +49,7 @@ makeGrid();
 function makeGrid()
 {
 
-let route=
-parseInt(
+let route=parseInt(
 document.getElementById("route").value
 );
 
@@ -69,8 +66,7 @@ cls+=" booked";
 else if(selected.includes(i))
 cls+=" selected";
 
-g+=
-`<div class="${cls}" onclick="pick(${i})">${i}</div>`;
+g+=`<div class="${cls}" onclick="pick(${i})">${i}</div>`;
 
 }
 
@@ -84,8 +80,7 @@ document.getElementById("grid").innerHTML=g;
 function pick(n)
 {
 
-let route=
-parseInt(
+let route=parseInt(
 document.getElementById("route").value
 );
 
@@ -104,11 +99,9 @@ makeGrid();
 function confirmBook()
 {
 
-let name=
-document.getElementById("name").value;
+let name=document.getElementById("name").value;
 
-let route=
-parseInt(
+let route=parseInt(
 document.getElementById("route").value
 );
 
@@ -122,10 +115,10 @@ for(let s of selected)
 {
 
 Module.ccall(
-"menu",
+"book",
 null,
-["number","number","number","number","string"],
-[1,route-1,s,0,name]
+["number","number","string"],
+[route-1,s,name]
 );
 
 booked[route].add(s);
@@ -149,18 +142,17 @@ function cancel()
 clearAll();
 
 let id=prompt("Enter Ticket ID");
-
 if(!id) return;
-
-Module.ccall(
-"menu",
-null,
-["number","number","number","number","string"],
-[2,0,0,id,""]
-);
 
 let route=prompt("Enter Route");
 let seat=prompt("Enter Seat");
+
+Module.ccall(
+"cancelTicket",
+null,
+["number"],
+[id]
+);
 
 route=parseInt(route);
 seat=parseInt(seat);
@@ -180,13 +172,11 @@ clearAll();
 
 let id=prompt("Enter Ticket ID");
 
-if(!id) return;
-
 Module.ccall(
-"menu",
+"searchTicket",
 null,
-["number","number","number","number","string"],
-[3,0,0,id,""]
+["number"],
+[id]
 );
 
 }
@@ -198,10 +188,10 @@ function report()
 clearAll();
 
 Module.ccall(
-"menu",
+"report",
 null,
-["number","number","number","number","string"],
-[4,0,0,0,""]
+[],
+[]
 );
 
 }
