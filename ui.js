@@ -99,35 +99,35 @@ makeGrid();
 function confirmBook()
 {
 
-let name=document.getElementById("name").value;
+let name=
+document.getElementById("name").value;
 
-let route=parseInt(
+let route=
+parseInt(
 document.getElementById("route").value
 );
 
-let text="";
+let out=document.getElementById("output");
 
-text+="Booking Confirmed\n";
-text+="Name under which ticket(s) booked :- "+name+"\n\n";
-text+="Tickets information :-\n";
+out.innerText="";
+
+out.innerText+="Booking Confirmed\n";
+out.innerText+="Name under which ticket(s) booked :- "+name+"\n\n";
+out.innerText+="Tickets information :-\n";
 
 for(let s of selected)
 {
 
 Module.ccall(
-"book",
+"menu",
 null,
-["number","number","string"],
-[route-1,s,name]
+["number","number","number","number","string"],
+[1,route-1,s,0,name]
 );
 
 booked[route].add(s);
 
-text+="Seat "+s+"\n";
-
 }
-
-document.getElementById("output").innerText=text;
 
 selected=[];
 
